@@ -1,0 +1,23 @@
+#img-card {
+  width: 350px;
+  height: 350px;
+  line-height: 300px;
+  text-align: center;
+}
+
+
+.card {
+ border: 2px solid rgba(104, 93, 93, 0.404);
+ border-radius: 10px;
+}
+
+
+#btnCarrito{
+  background-color:#e98b58;
+  color: white;
+  float: right;
+}
+
+#categories {
+  padding-bottom: 15px;
+}
