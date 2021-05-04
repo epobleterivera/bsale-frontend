@@ -1,28 +1,24 @@
 
 ### Descripción
-Esta es una aplicación backend con arquitectura API programada usando Node.JS y Express
+Esta es una aplicación Frontend desarrollada con HTMl y JavaScript
 
 
-### Proceso de inicio
-* Instale Node.js: debe tener [Node.js] (https://nodejs.org/en/download/) instalado en su sistema local.
-* Instalar NPM
-   * Descargue el [Administrador de paquetes] (https://www.npmjs.com/get-npm)
-   * Haga doble clic en el paquete y siga los pasos para instalarlo. 
-
-### Instalación del proyecto
-* Abrir un terminal en la carpeta ```cd``` raiz del proyecto.
-* Ejecutar ```(npm install)```, esto instalará las librerías declaradas en el archivo ```(package.js)``` y creará la carpeta ```(node_modules```).
-* Ejecutar ```(npm start)``` en el escritorio princpical del proyecto.
-* Se levantará un servidor local en el puerto http://localhost:3001.
-* Ahora podras realizar las distintas peticiones al backend y así tener acceso a los datos desde la direción de la Base de Datos configurada
+### Proceso de inicio (LOCAL)
+* En primer lugar si deseamos iniciar la aplicación de forma local, debemos instalar [XAMPP](https://www.apachefriends.org/es/index.html/)(u otra aplicación), que nos permita levantar un servidor  web local, una vez instalada, abriremos la aplicación e inicializaremos los servicios de ```apache```, de esta forma se creará un servidor local en la dirección ```http://localhost```.
+* Para poder visualizar nuestra aplicación en el servidor web local levantado en el paso anterior, debemos mover nuestra carpeta de frontend a la carpeta htdocs del programa XAMPP.
+* Luego de esto,  nos dirigimos al directorio donde tenemos todo nuestro backend, abrimos una terminal  y ejecutamos el comando ```(npm start)```, de esta forma NodeJS levantará el servidor en el puerto ```:3001```,(configurado para este proyecto en particular).
+* Una vez realizado esto, desde nuestra aplicación Xampp en el servicio Apache, seleccionaremos la opción admin, esto abrira un buscador web que ejecutará la aplicación desde su archivo ```index.html``` del directorio del frontend.
+  
 
 ### Estructura del codigo
-* El archivo ```index.js``` es nuestro archivo principal y es de donde se ejecutará nuestra aplicación.
-* Este archivo llamará al archivo ```index.js```` quien levantará el el servicio de [Express](https://expressjs.com/) y las rutas para las peticiones HTTP
-* En la carpeta ```routes```, encontraremos las rutas y las respectivas funciones que se ejecutarán del controlador
-* En la carpeta ```controller```, se definene las funciones que realizarán las diferentes peticiones de datos a la BD
-* En la carpeta ```models```, contiene la configuración de la conexión a la base de datos, la cual es importada en los controladores para realizar una simplificación del código  al momento de realizar la consulta a la BD.
+* El archivo ```index.php``` es nuestro archivo principal y es de donde se ejecutará nuestra aplicación, tiene un llamado al archivo ```index.html``` quier cargará todos los aspectos visuales e importará las diferentes funcionalidades que nuestra aplicación web tiene.
+* El archivo ```app.js``` desarrollado en ```Vainilla JavaScript```, contiene toda la logica de programación que hace funcionar la aplicación web, entre ellas:
+   - XMLHttpRequest para peticiones a BD
+   - Carga de producto
+   - Input de Buscador de producto
+   - Despliege de categorías de productos
+   - Creación de carrito de comprar
+* La carpeta ```/image```, cotiene las distintas imagenes que son utilizadas y cargadas en el DOM.
+* La carpeta ```/css```, contiene el archivo de stilos personalizados que fueron declarados.  
 
-### Manejo de respuesta Servidor
-* ```200``` : Cuando la petición se ejecuto correctamente.
-* ```error``` : Desplegará un mensaje de error con su respectivo codigo.
+
