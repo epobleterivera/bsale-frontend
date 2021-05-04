@@ -13,11 +13,10 @@ let carrito = {};
 let allProduct = {};
 const noImage = new Image();
 noImage.src = './image/noImage.jpg';
-//noImage.src ='https://app-bsale-eduardopoblete.herokuapp.com/'
 
 // Ruta para  connexión a la API del backend
-const url = "http://localhost:3001/api/product";
-const urlCategory = "http://localhost:3001/api/category";
+const url = "https://bsale-tienda-app.herokuapp.com/api/product";
+const urlCategory = "https://bsale-tienda-app.herokuapp.com/api/category";
 
 //evento que se dispara cuando se aprieta cualquier tecla dentro del input buscador
 //captura lo que va escribiendo el usuario y lo va guardando en una variable
