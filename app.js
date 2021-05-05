@@ -33,10 +33,9 @@ btnBuscar.addEventListener("click", () => {
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
       let data = JSON.parse(this.responseText);
-      console.log("dvwe");
       loadData(data);
     }
-    if (xhr.status === 404) {
+    if (xhr.status === 204) {
       productos.innerHTML = "";
       notFound.innerHTML = `<img id=imgNotFound src="./image/404.png" />`;
     }
