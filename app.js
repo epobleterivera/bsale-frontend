@@ -6,23 +6,25 @@ const templateFooter = document.getElementById("template-footer").content;
 const templateCarrito = document.getElementById("template-carrito").content;
 const items = document.getElementById("items");
 const footer = document.getElementById("footer");
-const buscar = document.getElementById("buscador");
+const inputBuscar = document.getElementById("inputBuscar");
+const btnBuscar = document.getElementById("btnBuscar")
 const categories = document.getElementById("categories");
 const btnCarrito = document.getElementById("btnCarrito");
+
 let carrito = {};
 let allProduct = {};
 const noImage = new Image();
 noImage.src = './image/noImage.jpg';
 
 // Ruta para  connexión a la API del backend
-const url = "https://bsale-tienda-app.herokuapp.com/api/product";
-const urlCategory = "https://bsale-tienda-app.herokuapp.com/api/category";
+const url = "http://localhost:3001/api/product";
+const urlCategory = "http://localhost:3001/api/category";
 
 //evento que se dispara cuando se aprieta cualquier tecla dentro del input buscador
 //captura lo que va escribiendo el usuario y lo va guardando en una variable
 //se genera una consulta XMLHttpRequest a la API y posteriormente BD para ver si existen coincidencias con algun producto
-buscar.addEventListener("keyup", () => {
-  const name = buscar.value;
+btnBuscar.addEventListener("click", () => {
+  const name = inputBuscar.value;
   var xhr = new XMLHttpRequest(),
     method = "GET",
     api = url + `/name?name=${name}`;
@@ -31,8 +33,12 @@ buscar.addEventListener("keyup", () => {
   xhr.onreadystatechange = function () {
     if (xhr.readyState === XMLHttpRequest.DONE && xhr.status === 200) {
       let data = JSON.parse(this.responseText);
-      console.log(data);
+      console.log("dvwe");
       loadData(data);
+    }
+    if (xhr.status === 404) {
+      productos.innerHTML = "";
+      notFound.innerHTML = `<img id=imgNotFound src="./image/404.png" />`;
     }
   };
   xhr.send();
@@ -41,6 +47,7 @@ buscar.addEventListener("keyup", () => {
 //evento que se dispara cuando se carga el DOM
 //se genera una consulta XMLHttpRequest a la API y posteriormente BD para así traer todos los datos de la tabla produto
 document.addEventListener("DOMContentLoaded", () => {
+  inputBuscar.value = "";
   var xhr = new XMLHttpRequest(),
     method = "GET",
     api = url;
@@ -55,6 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   };
   xhr.send();
+
 });
 
 //función que recibe la data de los diferentes eventos de donde es llamada, para cada valor recibido esta función los va cargando en las diferentes etiquetas del templatecard en el HTML
@@ -63,13 +71,14 @@ document.addEventListener("DOMContentLoaded", () => {
 //Esto se hace para no generar reflow ya que el fragment son nodos del DOM (estan en memoria),pero que no foman parte del arbol del DOM, lo que mejora la performance de la aplicación
 const loadData = (data) => {
   productos.innerHTML = "";
+  notFound.innerHTML = "";
   Object.values(data).forEach((producto) => {
     templateCard.querySelector("h5").textContent = producto.name;
     templateCard.querySelector("p").textContent = producto.price;
-    if(producto.url_image==null || producto.url_image == "") {
-      templateCard.querySelector("img").setAttribute("src",noImage.src);
-    }else{
-      templateCard.querySelector("img").setAttribute("src",producto.url_image);
+    if (producto.url_image == null || producto.url_image == "") {
+      templateCard.querySelector("img").setAttribute("src", noImage.src);
+    } else {
+      templateCard.querySelector("img").setAttribute("src", producto.url_image);
     }
     templateCard.querySelector(".btn-dark").dataset.id = producto.id;
     const clone = templateCard.cloneNode(true);
@@ -140,16 +149,16 @@ const agregarFooter = () => {
   }
 
   //calculos de acumulador de productos
-  const nCantidad = Object.values(carrito).reduce(   (acc, { cantidad }) => acc + cantidad,0);
+  const nCantidad = Object.values(carrito).reduce((acc, { cantidad }) => acc + cantidad, 0);
 
   //con el acumulador de productos anterior podremos calcular el total del producto en función de la cantidad comprada.
   const nTotal = Object.values(carrito).reduce(
-    (acc, { precio, cantidad }) => acc + precio * cantidad, 0 );
+    (acc, { precio, cantidad }) => acc + precio * cantidad, 0);
 
   //se añade la cantidad de productos y el total de la compra al templateFooter
   templateFooter.querySelectorAll("td")[0].textContent = nCantidad;
   templateFooter.querySelector("span").textContent = nTotal;
-  btnCarrito.textContent =(`Ver Carrito 🛒 ( ${nCantidad} )`)
+  btnCarrito.textContent = (`Ver Carrito 🛒 ( ${nCantidad} )`)
 
   const clone = templateFooter.cloneNode(true);
   fragment.appendChild(clone);
@@ -214,24 +223,21 @@ document.addEventListener("DOMContentLoaded", () => {
 const loadCategory = (data) => {
   data.map(function (category) {
     let name = category.name.toUpperCase();
-    document.querySelector("#categories").innerHTML += `<button type="button" class="btn btn-primary">${name}</button>&nbsp`;
+    document.querySelector("#categories").innerHTML += `<button type="button" id=${category.id} class="btn btn-primary">${name}</button>&nbsp`;
   });
-  document.querySelector(
-    "#categories"
-  ).innerHTML += `<button type="button" class="btn btn-success">SACAR FILTRO</button>&nbsp`;
+  document.querySelector("#categories").innerHTML += `<button type="button" id=sinFiltro class="btn btn-success">SACAR FILTRO</button>&nbsp`;
 };
 
 //Función que captura el botón de la categoría donde se realizo el click
 //se genera petición XMLHttpRequest para ir a buscar todos los productos de la categoria selecionada
 categories.addEventListener("click", (e) => {
-  const category_name = e.target.innerText.toLowerCase();
-  console.log(category_name);
-  if (category_name === "sacar filtro") {
+  const category_id = e.target.id;
+  if (category_id === "sinFiltro") {
     loadData(allProduct)
   } else {
     var xhr = new XMLHttpRequest(),
       method = "GET",
-      api = urlCategory + `/name?name=${category_name}`;
+      api = urlCategory + `/id?id=${category_id}`;
 
     xhr.open(method, api, true);
     xhr.onreadystatechange = function () {
